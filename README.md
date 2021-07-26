@@ -35,7 +35,17 @@ Conference
 </div>
  
 ## Description   
-What it does   
+What it does
+
+## Goals
+* Design a system to recognize novel object types from a few images used for training.
+* Start from pretrained [CLIP architecture](https://github.com/openai/CLIP)
+* Few shot task: develop a classification model trained and tested on the provided data.
+* Zero shot task: as an extension of the few shot task, and using no data for training.
+
+## Provided dataset
+* For training: a dataset (/data/train) consisting of a small set of training images, i.e. 10-20 samples per object class.
+* For testing: a dataset (/data/test) providing some images reserved to evaluate the system.
 
 ## How to run   
 First, install dependencies   
