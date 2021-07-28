@@ -56,7 +56,10 @@ class FewShotDataset(data.Dataset):
 
 
 class FewShotDataModule(pl.LightningDataModule):
-    def __init__(self, ops: Callable, batch_size: int = 4, num_workers: int = 8, path_to_data: str = './dataset/few_shot/'):
+    """Class encapsulating all the routines to handle FewShot Dataset.
+    """
+    def __init__(self, ops: Callable, batch_size: int = 4,
+                 num_workers: int = 8, path_to_data: str = './dataset/few_shot/'):
         """Class encapsulating all the routines to handle FewShot Dataset.
 
         Args:
@@ -159,15 +162,15 @@ class FewShotDataModule(pl.LightningDataModule):
             self.datasets['train'] = FewShotDataset(self.splits['train'], self.ops)
 
             # Get a 20% of the train data for validation in a stratified way.
-            x = [i[0] for i in self.datasets['train']]
-            y = [i[1] for i in self.datasets['train']]
+            _x = [i[0] for i in self.datasets['train']]
+            _y = [i[1] for i in self.datasets['train']]
 
-            train_x, val_x, train_y, val_y = train_test_split(x, y, test_size=0.2, stratify=y)
-            print(np.unique(train_y, return_counts=True))
-            print(np.unique(val_y, return_counts=True))
+            _train_x, _val_x, _train_y, _val_y = train_test_split(_x, _y, test_size=0.2, stratify=y)
+            print(np.unique(_train_y, return_counts=True))
+            print(np.unique(_val_y, return_counts=True))
 
-            self.datasets['train'] = [[i, j] for i,j in zip(train_x, train_y)]
-            self.datasets['valid'] = [[i, j] for i,j in zip(val_x, val_y)]
+            self.datasets['train'] = [[i, j] for i,j in zip(_train_x, _train_y)]
+            self.datasets['valid'] = [[i, j] for i,j in zip(_val_x, _val_y)]
 
         if stage in (None, 'test'):
             self.datasets['test'] = FewShotDataset(self.splits['test'], self.ops)
