@@ -10,10 +10,10 @@ from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 from pytorch_lightning.loggers.neptune import NeptuneLogger
 
 # Model
-from .few_shot import FewShot
+from few_shot import FewShot
 
 # Datamodule
-from .dataloader import FewShotDataModule
+from dataloader import FewShotDataModule
 
 parser = ArgumentParser()
 
