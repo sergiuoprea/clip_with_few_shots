@@ -18,7 +18,7 @@ from scikitplot.metrics import plot_confusion_matrix
 import matplotlib.pyplot as plt
 
 # Utils
-from .utils import classification_block
+from utils import classification_block
 
 # Name position determines class idx
 CLASS_NAMES = ['airplane', 'bicycle', 'boat', 'bus', 'car', 'motorcycle', 'train', 'truck']
@@ -218,5 +218,5 @@ class FewShot(pl.LightningModule):
 
         ## Get the confussion matrix
         _fig, _ax = plt.subplots(figsize=(16, 12))
-        plot_confusion_matrix(y_true=self.targs, y_pred=self.outs, labels=CLASS_NAMES, ax=_ax)
+        plot_confusion_matrix(y_true=self.targs, y_pred=self.outs, normalize=True, ax=_ax)
         self.logger.experiment.log_image('test/confussion_matrix', _fig)

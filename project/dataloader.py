@@ -59,7 +59,7 @@ class FewShotDataModule(pl.LightningDataModule):
     """Class encapsulating all the routines to handle FewShot Dataset.
     """
     def __init__(self, ops: Callable, batch_size: int = 4,
-                 num_workers: int = 8, path_to_data: str = './dataset/few_shot/'):
+                 num_workers: int = 8, path_to_data: str = 'project/dataset/few_shot/'):
         """Class encapsulating all the routines to handle FewShot Dataset.
 
         Args:
