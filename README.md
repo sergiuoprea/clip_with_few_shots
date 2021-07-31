@@ -1,41 +1,14 @@
-### Deep learning project seed
-Use this seed to start new deep learning / ML projects.
-
-- Built in setup.py
-- Built in requirements
-- Examples with MNIST
-- Badges
-- Bibtex
-
-#### Goals  
-The goal of this seed is to structure ML paper-code the same so that work can easily be extended and replicated.   
-
-### DELETE EVERYTHING ABOVE FOR YOUR PROJECT  
- 
----
-
 <div align="center">    
  
-# Your Project Name     
+# Few-Zero shot learning using CLIP architecture as backbone
+## Proudly implemented in Pytorch Lightning
 
-[![Paper](http://img.shields.io/badge/paper-arxiv.1001.2234-B31B1B.svg)](https://www.nature.com/articles/nature14539)
-[![Conference](http://img.shields.io/badge/NeurIPS-2019-4b44ce.svg)](https://papers.nips.cc/book/advances-in-neural-information-processing-systems-31-2018)
-[![Conference](http://img.shields.io/badge/ICLR-2019-4b44ce.svg)](https://papers.nips.cc/book/advances-in-neural-information-processing-systems-31-2018)
-[![Conference](http://img.shields.io/badge/AnyConference-year-4b44ce.svg)](https://papers.nips.cc/book/advances-in-neural-information-processing-systems-31-2018)  
-<!--
-ARXIV   
-[![Paper](http://img.shields.io/badge/arxiv-math.co:1480.1111-B31B1B.svg)](https://www.nature.com/articles/nature14539)
--->
 ![CI testing](https://github.com/PyTorchLightning/deep-learning-project-template/workflows/CI%20testing/badge.svg?branch=master&event=push)
 
-
-<!--  
-Conference   
--->   
 </div>
  
 ## Description   
-What it does
+This is a simple 3-layer multi-class classifier working on top of features extracted from [CLIP architecture](https://github.com/openai/CLIP). The provided dataset is imbalanced, so we have used a WeightedRandomSampler to ensure the DataLoader retrieves the samples with equal probability. Also, training set was splitted into the train and validation splits using the latter to choice the best performing model. On the other side, we have tested ViT-B/32 and ViT-B/16 CLIP models. The latter provided the best results in our case.
 
 ## Goals
 * Design a system to recognize novel object types from a few images used for training.
@@ -47,53 +20,22 @@ What it does
 * For training: a dataset (/data/train) consisting of a small set of training images, i.e. 10-20 samples per object class.
 * For testing: a dataset (/data/test) providing some images reserved to evaluate the system.
 
-## How to run   
-First, install dependencies   
+## How to run (Docker)
+Run build.sh script. This will automatically install all the dependencies in requirements.txt and clone the project in the docker container (/src/clip_with_few_shots).
 ```bash
-# clone project   
-git clone https://github.com/YourGithubName/deep-learning-project-template
+# build docker container  
+./build.sh
 
-# install project   
-cd deep-learning-project-template 
-pip install -e .   
-pip install -r requirements.txt
+# run docker container
+./run.sh
  ```   
- Next, navigate to any file and run it.   
+ Next, navigate to /src/clip_with_few_shots and run main.py. This will, train, validate and test the model properly.
  ```bash
 # module folder
-cd project
+cd /src/clip_with_few_shots
 
-# run module (example: mnist as your main contribution)   
-python lit_classifier_main.py    
+# run module
+python main.py    
 ```
 
-## Imports
-This project is setup as a package which means you can now easily import any file into any other file like so:
-```python
-from project.datasets.mnist import mnist
-from project.lit_classifier_main import LitClassifier
-from pytorch_lightning import Trainer
-
-# model
-model = LitClassifier()
-
-# data
-train, val, test = mnist()
-
-# train
-trainer = Trainer()
-trainer.fit(model, train, val)
-
-# test using the best model!
-trainer.test(test_dataloaders=test)
-```
-
-### Citation   
-```
-@article{YourName,
-  title={Your Title},
-  author={Your team},
-  journal={Location},
-  year={Year}
-}
-```   
+## Some results 
