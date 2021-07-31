@@ -18,7 +18,7 @@ from scikitplot.metrics import plot_confusion_matrix
 import matplotlib.pyplot as plt
 
 # Utils
-from utils import classification_block
+from project.utils import classification_block
 
 # Name position determines class idx
 CLASS_NAMES = ['airplane', 'bicycle', 'boat', 'bus', 'car', 'motorcycle', 'train', 'truck']
