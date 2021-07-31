@@ -39,3 +39,17 @@ python main.py
 ```
 
 ## Some results 
+
+### Confusion matrix
+The horizontal and vertical axes indices correspond with the following classes:
+```
+['airplane', 'bicycle', 'boat', 'bus', 'car', 'motorcycle', 'train', 'truck']
+```
+<img src="plots/normalized_conf_matrix.png" width="800">
+
+We notice a confussion between cars and trucks due to the similarities between both.
+
+### Training and validation accuracies
+
+<img src="plots/logs_train_acc_per_epoch.png" width="800">
+<img src="plots/logs_valid_acc_per_epoch.png" width="800">
