@@ -1,15 +1,18 @@
 from pytorch_lightning import Trainer, seed_everything
-from project.lit_mnist import LitClassifier
-from project.datasets.mnist import mnist
+from project.few_shot import FewShot
+from project.dataloader import FewShotDataModule
 
 
-def test_lit_classifier():
-    seed_everything(1234)
+def test_training_classifier():
+    seed_everything(2021)
 
-    model = LitClassifier()
-    train, val, test = mnist()
-    trainer = Trainer(limit_train_batches=50, limit_val_batches=20, max_epochs=2)
-    trainer.fit(model, train, val)
+    model = FewShot()
+    dm = FewShotDataModule(ops=model.preprocess)
+    dm.setup(stage='fit')
 
-    results = trainer.test(test_dataloaders=test)
-    assert results[0]['test_acc'] > 0.7
+    trainer = Trainer(precision=16, limit_train_batches=30, limit_val_batches=20, max_epochs=15)
+    trainer.fit(model, dm)
+
+    dm.setup(stage='test')
+    results = trainer.test(dm)
+    assert results[0]['test_acc'] > 0.8
