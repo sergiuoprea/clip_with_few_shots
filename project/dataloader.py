@@ -82,6 +82,7 @@ class FewShotDataModule(pl.LightningDataModule):
         self.splits = {} # Contains train and valid splits.
         self.datasets = {} # Contains instances of the Dataset class. One per data spit.
         self.class_map = dict(zip(CLASS_NAMES, range(len(CLASS_NAMES))))
+        self.weights = [0] * len(CLASS_NAMES)
 
     @staticmethod
     def add_model_specific_args(parent_parser: ArgumentParser) -> ArgumentParser:
@@ -120,8 +121,12 @@ class FewShotDataModule(pl.LightningDataModule):
 
             # get the images in pairs with its corresponding class
             for _class in _img_classes:
-                self.splits[os.path.basename(_path)].extend(
-                    self.get_img_text_pair(os.path.join(_path, _class)))
+                _data = self.get_img_text_pair(os.path.join(_path, _class))
+
+                if os.path.basename(_path) == 'train':
+                    self.weights[self.encode_label(_class)] = len(_data)
+                self.splits[os.path.basename(_path)].extend(_data)
+
 
     def encode_label(self, label: str) -> int:
         """Function used to encode the text label to a class index.
@@ -159,18 +164,20 @@ class FewShotDataModule(pl.LightningDataModule):
             stage (Optional[str], optional): Training or test stage. Defaults to None.
         """
         if stage in (None, 'fit'):
-            self.datasets['train'] = FewShotDataset(self.splits['train'], self.ops)
-
             # Get a 20% of the train data for validation in a stratified way.
-            _x = [i[0] for i in self.datasets['train']]
-            _y = [i[1] for i in self.datasets['train']]
+            _x = [i[1] for i in self.splits['train']]
+            _y = [i[0] for i in self.splits['train']]
 
-            _train_x, _val_x, _train_y, _val_y = train_test_split(_x, _y, test_size=0.2, stratify=y)
-            print(np.unique(_train_y, return_counts=True))
-            print(np.unique(_val_y, return_counts=True))
+            _train_x, _val_x, _train_y, _val_y = train_test_split(_x, _y, test_size=0.2,
+                                                                  stratify=_y)
+            #print(np.unique(_train_y, return_counts=True))
+            #print(np.unique(_val_y, return_counts=True))
 
-            self.datasets['train'] = [[i, j] for i,j in zip(_train_x, _train_y)]
-            self.datasets['valid'] = [[i, j] for i,j in zip(_val_x, _val_y)]
+            self.splits['train'] = [[i, j] for i,j in zip(_train_y, _train_x)]
+            self.splits['valid'] = [[i, j] for i,j in zip(_val_y, _val_x)]
+
+            self.datasets['train'] = FewShotDataset(self.splits['train'], self.ops)
+            self.datasets['valid'] = FewShotDataset(self.splits['valid'], self.ops)
 
         if stage in (None, 'test'):
             self.datasets['test'] = FewShotDataset(self.splits['test'], self.ops)
@@ -181,8 +188,21 @@ class FewShotDataModule(pl.LightningDataModule):
         Returns:
             data.DataLoader: train dataloader.
         """
+        # Random weighted sampler to approach the imbalanced dataset
+        self.weights = [1.0 / i for i in self.weights]
+
+        _sample_weights = [0] * len(self.datasets['train'])
+
+        for idx, (_, label) in enumerate(self.datasets['train']):
+            _weight = self.weights[label]
+            _sample_weights[idx] = _weight
+
+        random_sampler = data.WeightedRandomSampler(_sample_weights,
+                                                    len(self.datasets['train']), replacement=False)
+
         return data.DataLoader(dataset=self.datasets['train'], batch_size=self.batch_size,
-                               num_workers=self.num_workers, shuffle=True, pin_memory=False)
+                               num_workers=self.num_workers, pin_memory=False,
+                               sampler=random_sampler)
 
     def val_dataloader(self) -> data.DataLoader:
         """Getter for the validation dataloader
