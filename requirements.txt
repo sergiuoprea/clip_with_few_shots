@@ -10,3 +10,4 @@ tqdm
 sklearn
 torchmetrics
 scikit-plot
+git+https://github.com/openai/CLIP.git
