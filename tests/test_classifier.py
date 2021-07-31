@@ -1,6 +1,7 @@
 from pytorch_lightning import Trainer, seed_everything
 from project.few_shot import FewShot
 from project.dataloader import FewShotDataModule
+from pytorch_lightning.loggers.neptune import NeptuneLogger
 
 
 def test_training_classifier():
@@ -11,7 +12,9 @@ def test_training_classifier():
     dm.prepare_data()
     dm.setup(stage='fit')
 
-    trainer = Trainer(limit_train_batches=30, limit_val_batches=20, max_epochs=15, logger=False)
+    logger = NeptuneLogger(offline_mode=True)
+
+    trainer = Trainer(limit_train_batches=30, limit_val_batches=20, max_epochs=15, logger=logger)
     trainer.fit(model, dm)
 
     dm.setup(stage='test')
