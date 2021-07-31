@@ -8,6 +8,7 @@ def test_training_classifier():
 
     model = FewShot()
     dm = FewShotDataModule(ops=model.preprocess)
+    dm.prepare_data()
     dm.setup(stage='fit')
 
     trainer = Trainer(precision=16, limit_train_batches=30, limit_val_batches=20, max_epochs=15)
