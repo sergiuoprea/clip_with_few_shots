@@ -18,5 +18,9 @@ def test_classifier():
     trainer.fit(model, dm)
 
     dm.setup(stage='test')
-    results = trainer.test()
-    assert results[0]['test_acc'] > 0.7
+    trainer.test()
+    assert trainer.checkpoint_callback.best_model_score.item() > 0.7
+
+
+if __name__=='__main__':
+    test_classifier()
