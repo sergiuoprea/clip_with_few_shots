@@ -14,13 +14,8 @@ def test_classifier():
 
     logger = NeptuneLogger(offline_mode=True)
 
-    trainer = Trainer(limit_train_batches=30, limit_val_batches=20, max_epochs=1, logger=logger)
+    trainer = Trainer(max_epochs=1, logger=logger)
     trainer.fit(model, dm)
 
     dm.setup(stage='test')
     trainer.test()
-    assert trainer.checkpoint_callback.best_model_score.item() > 0.7
-
-
-if __name__=='__main__':
-    test_classifier()
