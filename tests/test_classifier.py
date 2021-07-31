@@ -11,7 +11,7 @@ def test_training_classifier():
     dm.prepare_data()
     dm.setup(stage='fit')
 
-    trainer = Trainer(limit_train_batches=30, limit_val_batches=20, max_epochs=15)
+    trainer = Trainer(limit_train_batches=30, limit_val_batches=20, max_epochs=15, logger=None)
     trainer.fit(model, dm)
 
     dm.setup(stage='test')
