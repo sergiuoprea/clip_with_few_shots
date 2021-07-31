@@ -8,6 +8,8 @@ RUN pip install -r requirements.txt
 
 RUN pip install git+https://github.com/openai/CLIP.git
 
-RUN mkdir src/ && cd src/
+RUN mkdir /src \      
+           cd /src \        
+           git clone https://github.com/sergiuoprea/clip_with_few_shots.git
 
-RUN git clone https://github.com/sergiuoprea/clip_with_few_shots.git
+WORKDIR /src
