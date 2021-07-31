@@ -4,12 +4,12 @@ from setuptools import setup, find_packages
 
 setup(
     name='project',
-    version='0.0.0',
-    description='Describe Your Cool Project',
-    author='',
-    author_email='',
+    version='1.0.0',
+    description='Few shot classifier project',
+    author='Sergiu Ovidiu Oprea',
+    author_email='soprea@dtic.ua.es',
     # REPLACE WITH YOUR OWN GITHUB PROJECT LINK
-    url='https://github.com/PyTorchLightning/pytorch-lightning-conference-seed',
+    url='https://github.com/sergiuoprea/clip_with_few_shots',
     install_requires=['pytorch-lightning'],
     packages=find_packages(),
 )
