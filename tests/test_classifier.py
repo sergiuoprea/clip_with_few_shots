@@ -14,9 +14,9 @@ def test_classifier():
 
     logger = NeptuneLogger(offline_mode=True)
 
-    trainer = Trainer(limit_train_batches=30, limit_val_batches=20, max_epochs=15, logger=logger)
+    trainer = Trainer(limit_train_batches=30, limit_val_batches=20, max_epochs=1, logger=logger)
     trainer.fit(model, dm)
 
     dm.setup(stage='test')
-    results = trainer.test(dm)
-    assert results[0]['test_acc'] > 0.8
+    results = trainer.test()
+    assert results[0]['test_acc'] > 0.7
