@@ -1,0 +1,1 @@
+docker run --gpus '"device=1"' --rm -it -d --shm-size 8G --name helsing helsing

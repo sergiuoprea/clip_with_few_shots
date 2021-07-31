@@ -4,7 +4,7 @@ from project.dataloader import FewShotDataModule
 from pytorch_lightning.loggers.neptune import NeptuneLogger
 
 
-def test_training_classifier():
+def test_classifier():
     seed_everything(2021)
 
     model = FewShot()
