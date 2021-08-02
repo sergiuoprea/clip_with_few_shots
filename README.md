@@ -3,7 +3,7 @@
 # Few-Zero shot learning using CLIP architecture as backbone
 ## Proudly implemented in Pytorch Lightning
 
-![CI testing](https://github.com/PyTorchLightning/deep-learning-project-template/workflows/CI%20testing/badge.svg?branch=master&event=push)
+![CI testing](https://github.com/sergiuoprea/clip_with_few_shots/workflows/CI%20testing/badge.svg?branch=master&event=push)
 
 </div>
  
